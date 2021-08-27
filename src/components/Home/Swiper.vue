@@ -13,6 +13,7 @@
   import {
     defineComponent,
     onMounted,
+    onUpdated,
     reactive,
     ref,
     toRefs
@@ -40,13 +41,16 @@
     components: {},
     setup() {
       let imgs = reactive({
-        lists: [{
-          pic: "1"
-        }]
+        lists: []
       })
-      console.log('setup begin')
-      onMounted(() => {
-        console.log('onmounted')
+      onMounted(async () => {
+        let res = await getBanners({ type: 2 })
+        if ( res.data.code === 200 ) {
+          imgs.lists = res.data.banners
+        }
+
+      });
+      onUpdated(() => {
         new Swiper(".swiper3", {
           pagination: {
             el: ".swiper-pagination",
@@ -65,16 +69,7 @@
             shadowScale: 0.6,
           },
         });
-
-      });
-      getBanners({
-        type: 2
-      }).then(res => {
-        const data = res.data.banners
-        imgs.lists = data
-        console.log('getBanners')
       })
-      console.log('setup over')
       return {
         ...toRefs(imgs)
       }

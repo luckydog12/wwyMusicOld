@@ -9,10 +9,10 @@
 
 <script>
 // @ is an alias to /src
-import TopNav from '@/components/TopNav.vue'
-import Swiper from '../components/Swiper.vue'
-import IconList from '../components/IconList.vue'
-import FindMusicLIst from '../components/FindMusicLIst.vue'
+import TopNav from '@/components/Home/TopNav.vue'
+import Swiper from '@/components/Home/Swiper.vue'
+import IconList from '@/components/Home/IconList.vue'
+import FindMusicLIst from '@/components/Home/FindMusicLIst.vue'
 
 export default {
   name: 'Home',

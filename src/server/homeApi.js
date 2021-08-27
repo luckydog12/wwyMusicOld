@@ -1,3 +1,7 @@
 import { get, post } from "./methods";
 
-export const getBanners = (params) => get(`/banner?type=${params.type}`, params, true)
+// 获取轮播图
+export const getBanners = (params) => get(`/banner?type=${params.type}`, params)
+
+// 获取推荐歌单
+export const getMusicList = (params) => get(`/personalized?limit=${params.limit}`, params) 
