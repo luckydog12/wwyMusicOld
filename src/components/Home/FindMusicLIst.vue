@@ -105,6 +105,7 @@
     .center {
       margin-top: 0.3rem;
       .swiper-container {
+        // z-index: -99999;
         height: 2.8rem;
         // background: #bfa;
         .swiper-wrapper {

@@ -79,6 +79,7 @@
 
 <style lang="less" scoped>
   .swiper-container {
+    // z-index: -99999;
     width: 95%;
     height: 2.5rem;
     border-radius: 0.2rem;

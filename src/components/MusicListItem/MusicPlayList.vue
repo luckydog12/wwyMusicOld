@@ -20,24 +20,22 @@
     <div class="center" ref="center">
 
       <div class="item" v-for="(item, i) in playlist.tracks" :key="i">
-
         <div class="left" @click="selectMusicPlay(i)">
-          <div> {{ i+1 }} </div>
+          <div class="index"> {{ i+1 }} </div>
           <div class="detail">
             <div class="title">{{ item.name }}</div>
             <div class="author">
               <p><span class="tag" v-for="(tagItem, idx) in item.ar" :key="idx">{{ tagItem.name }}</span></p>
-              
               <span class="album">{{ item.al.name }}</span>
             </div>
           </div>
         </div>
-
         <div class="right">
           <span class="iconfont icon-bofangsanjiaoxing" @click="selectMusicPlay(i)"></span>
           <span class="iconfont icon-gengduo"></span>
         </div>
       </div>
+      <div style="width: 100%;height: 0.8rem;"></div>
     </div>
   </div>
 </template>
@@ -119,6 +117,7 @@ export default defineComponent({
     .center {
       padding: 0.1rem ;
       .item {
+        height: 0.75rem;
         margin: 0.2rem 0;
         display: flex;
         align-items: center;
@@ -127,8 +126,20 @@ export default defineComponent({
           display: flex;
           align-items: center;
           width: 86%;
+          // 不设定大小的话 一位数 / 两位数 占位大小不同 导致detail不对齐
+          .index {
+            width: 0.2rem;
+          }
           .detail {
             margin-left: 0.4rem;
+            overflow: hidden;
+            white-space: nowrap;
+            // 文字显示一行 多余显示...
+            .title {
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+            }
             .author {
               color: #ccc;
               font-size: 0.2rem;

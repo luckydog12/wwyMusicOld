@@ -4,7 +4,8 @@ import createPersistedState from "vuex-persistedstate"
 export default createStore({
   state: {
     playList: [],
-    playCurrentIndex: 0
+    playCurrentIndex: 0,
+    lyricDetail: []
   },
   mutations: {
     setPlayList: (state, playList) => {
@@ -12,6 +13,9 @@ export default createStore({
     },
     setPlayCurrentIndex: (state, playCurrentIndex) => {
       state.playCurrentIndex = playCurrentIndex
+    },
+    setLyricDetail: (state, lyricDetail) => {
+      state.lyricDetail = lyricDetail
     }
   },
   actions: {
@@ -20,6 +24,9 @@ export default createStore({
     },
     setPlayCurrentIndex({commit}, playCurrentIndex) {
       commit('setPlayCurrentIndex', playCurrentIndex)
+    },
+    setLyricDetail({commit}, lyricDetail) {
+      commit('setLyricDetail', lyricDetail)
     }
   },
   modules: {
