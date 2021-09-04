@@ -24,8 +24,18 @@
       <img class="discCenter" @click="handleIsShowContent" v-if="nowPlayDetail.al.picUrl" :src="nowPlayDetail.al.picUrl" alt="">
       <img class="disc_default" @click="handleIsShowContent" v-else src="@/assets/playMusicPage/disc_default.png" alt="">
     </div>
-    <div class="lyric" @click="handleIsShowContent" v-else>
-      <p v-for="(item, i) in lyric" :key="i">{{ item.lyric }}</p>
+    <div class="lyric" ref="lyricDiv"  @click="handleIsShowContent" v-else>
+      {{ duration }}
+      <p 
+        :class="{ lyrActive: 
+        ( audioCurrentTime >= item.time ) &&
+        ( audioCurrentTime <= item.nextTime )
+        }" 
+        v-for="(item, i) in lyric" :key="i"
+        ref="lyrActiveP"
+      >
+        {{ item.nowLyric }}
+      </p>
     </div>
     <div class="process"></div>
     <div class="footer flex-row-spaceBetween">
@@ -33,29 +43,58 @@
       <span class="iconfont icon-shangyishoushangyige"></span>
       <span class="iconfont icon-bofang" v-if="isPlay" @click="handlePlay"></span>
       <span class="iconfont icon-iconfront-" v-else @click="handlePlay"></span>
-      <span class="iconfont icon-xiayigexiayishou"></span>
+      <span class="iconfont icon-xiayigexiayishou" @click="nextMusic"></span>
       <span class="iconfont icon-liebiao1"></span>
     </div>
   </div>
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, computed, reactive, onMounted, watch } from 'vue'
+import { useStore } from 'vuex'
 
 export default defineComponent({
-  props: ['nowPlayDetail', 'isPlay', 'lyric', 'handlePlay'],
+  props: ['nowPlayDetail', 'isPlay', 'lyric', 'audioCurrentTime', 'duration', 'handlePlay', 'handleNowPlayDetail'],
   setup(prop, ctx) {
     const isShowContent = ref(false)
+    const lyricDiv = ref(null)
+    const lyrActiveP = ref(null)
+    const store = useStore()
+    const state = reactive({
+      playList: [{al:{},ar: []}],
+      playListIndex: 0,
+      lyric: []
+    })
+    onMounted(()=> {
+      state.playList = computed(()=>store.state.playList)
+      state.playListIndex = computed(()=>store.state.playCurrentIndex)
+      state.lyric = computed(()=>store.state.lyricDetail)
+    })
+    watch(()=>prop.audioCurrentTime, (newVal) => {
+        console.log('div',[lyricDiv],lyricDiv.value.scrollTop)
+        let p = document.querySelector('p.lyrActive')
+        console.log('p',[p],p.offsetTop)
+        console.log('-----',p.offsetTop - 60 - 450/2)
+        lyricDiv.value.scrollTop = p.offsetTop - 60 - 450/2
+
+    })
     const handleBack = () => {
       ctx.emit('disapper')
     }
     const handleIsShowContent = () => {
       isShowContent.value = !isShowContent.value
     }
+    const nextMusic = () => {
+      store.dispatch('setPlayCurrentIndex', ++state.playListIndex)
+      prop.handleNowPlayDetail(state.playList[state.playListIndex].id)
+    }
     return {
       isShowContent,
+      lyricDiv,
+      lyrActiveP,
       handleBack,
-      handleIsShowContent
+      handleIsShowContent,
+      nextMusic
     }
   },
 })
@@ -156,6 +195,10 @@ export default defineComponent({
       justify-content: flex-start;
       overflow: scroll;
       color: #fff;
+      .lyrActive {
+        color: red;
+
+      }
       p {
         margin: 0.1rem;
       }
