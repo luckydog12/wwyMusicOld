@@ -21,4 +21,4 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 - test github token
 - test again
 - test again 2
-- add github config
+- add github config2
