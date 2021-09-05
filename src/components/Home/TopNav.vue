@@ -9,17 +9,29 @@
         <span class="navBtn">云村</span>
         <span class="navBtn">视频</span>
       </div>
-      <div class="topRight">
+      <div class="topRight" @click="handleSearch">
         <span class="iconfont icon-search"></span>
       </div>
     </div>
 </template>
 
 <script>
-export default {
-  
-}
+import { defineComponent } from 'vue'
+import { useRouter } from 'vue-router'
+
+export default defineComponent({
+  setup() {
+    const router = useRouter()
+    const handleSearch = () => {
+      router.push('/search')
+    }
+    return {
+      handleSearch
+    }
+  },
+})
 </script>
+
 
 <style lang="less" scoped>
  .topNav {

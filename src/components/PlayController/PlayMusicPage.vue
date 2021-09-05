@@ -40,7 +40,7 @@
     <div class="process"></div>
     <div class="footer flex-row-spaceBetween">
       <span class="iconfont icon-xunhuan"></span>
-      <span class="iconfont icon-shangyishoushangyige"></span>
+      <span class="iconfont icon-shangyishoushangyige" @click="preMusic"></span>
       <span class="iconfont icon-bofang" v-if="isPlay" @click="handlePlay"></span>
       <span class="iconfont icon-iconfront-" v-else @click="handlePlay"></span>
       <span class="iconfont icon-xiayigexiayishou" @click="nextMusic"></span>
@@ -71,10 +71,11 @@ export default defineComponent({
       state.lyric = computed(()=>store.state.lyricDetail)
     })
     watch(()=>prop.audioCurrentTime, (newVal) => {
-        console.log('div',[lyricDiv],lyricDiv.value.scrollTop)
+        // console.log('div',[lyricDiv],lyricDiv.value.scrollTop)
         let p = document.querySelector('p.lyrActive')
-        console.log('p',[p],p.offsetTop)
-        console.log('-----',p.offsetTop - 60 - 450/2)
+        // console.log('p',[p],p.offsetTop)
+        // console.log('-----',p.offsetTop - 60 - 450/2)
+        // 记得优化 此处暂时写死
         lyricDiv.value.scrollTop = p.offsetTop - 60 - 450/2
 
     })
@@ -83,6 +84,10 @@ export default defineComponent({
     }
     const handleIsShowContent = () => {
       isShowContent.value = !isShowContent.value
+    }
+    const preMusic = () => {
+      store.dispatch('setPlayCurrentIndex', --state.playListIndex)
+      prop.handleNowPlayDetail(state.playList[state.playListIndex].id)
     }
     const nextMusic = () => {
       store.dispatch('setPlayCurrentIndex', ++state.playListIndex)
@@ -94,7 +99,8 @@ export default defineComponent({
       lyrActiveP,
       handleBack,
       handleIsShowContent,
-      nextMusic
+      nextMusic,
+      preMusic
     }
   },
 })
